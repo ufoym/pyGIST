@@ -107,12 +107,12 @@ def gist(img, image_size=128, orientations=(8, 8, 4), num_blocks=4):
 
 # ----------------------------------------------------------------------------
 
-
 if __name__ == '__main__':
     import time
-    img_template = misc.imread('0.png', 0)
+    img_template = misc.imread('5.jpg', 0)
     ts = time.time()
-    print (gist(img_template))
-    print (time.time() - ts)
+    g = gist(img_template)
+    print ("processing time:",time.time() - ts)
+    print (g)
 
 # ----------------------------------------------------------------------------
