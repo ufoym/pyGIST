@@ -45,8 +45,8 @@ def gist(img, image_size=128, orientations=(8, 8, 4), num_blocks=4):
             nx = np.fix(np.linspace(0, x.shape[0], N+1)).astype(np.int)
             ny = np.fix(np.linspace(0, x.shape[1], N+1)).astype(np.int)
             y = np.zeros((N, N))
-            for xx in xrange(N):
-                for yy in xrange(N):
+            for xx in range(N):
+                for yy in range(N):
                     v = np.mean(x[nx[xx]:nx[xx+1], ny[yy]:ny[yy+1]])
                     y[yy, xx] = v
             return y
@@ -57,7 +57,7 @@ def gist(img, image_size=128, orientations=(8, 8, 4), num_blocks=4):
 
         img = np.fft.fft2(img)
         k = 0
-        for n in xrange(num_filters):
+        for n in range(num_filters):
             ig = np.abs(np.fft.ifft2(np.multiply(img, G[:, :, n])))
             v = average(ig, w)
             g[k:k+W, :] = np.reshape(v, (W, 1))
@@ -73,8 +73,8 @@ def gist(img, image_size=128, orientations=(8, 8, 4), num_blocks=4):
         num_filters = sum(orientations)
 
         param = []
-        for i in xrange(Nscales):
-            for j in xrange(orientations[i]):
+        for i in range(Nscales):
+            for j in range(orientations[i]):
                 param.append([.35,
                               .3/(1.85 ** i),
                               16.0 * orientations[i] ** 2 / 32 ** 2,
@@ -88,7 +88,7 @@ def gist(img, image_size=128, orientations=(8, 8, 4), num_blocks=4):
 
         # Transfer functions:
         gabors = np.zeros((n, n, num_filters))
-        for i in xrange(num_filters):
+        for i in range(num_filters):
             tr = t + param[i, 3]
             tr = tr + 2 * np.pi * (tr < -np.pi) - 2 * np.pi * (tr > np.pi)
             gabors[:, :, i] = np.exp(
@@ -112,7 +112,7 @@ if __name__ == '__main__':
     import time
     img_template = misc.imread('0.png', 0)
     ts = time.time()
-    print gist(img_template)
-    print time.time() - ts
+    print (gist(img_template))
+    print (time.time() - ts)
 
 # ----------------------------------------------------------------------------
