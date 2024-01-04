@@ -127,8 +127,7 @@ class Gist:
         return np.squeeze(features.flatten())
 
 
-def read_video():
-    file_path = "test.mp4"
+def read_video(file_path):
     cap = cv2.VideoCapture(file_path)
     fps = 0;
     capture_every = 30
@@ -149,7 +148,7 @@ def read_video():
                 
                     print (str(pos_frame)+" frames")
                     cv2.waitKey(100)
-                    yield frame            
+                    yield frame,pos_frame            
         else:
             # The next frame is not ready, so we try to read it again
             cap.set(cv2.CAP_PROP_POS_FRAMES, pos_frame-1)
@@ -168,10 +167,11 @@ def read_video():
 # ----------------------------------------------------------------------------
 
 if __name__ == '__main__':
-    reader = read_video()
+    file_path = "Test.mp4"    
+    reader = read_video(file_path)
     gist = Gist(image_size=128)
     import time
-    for frame in reader:
+    for frame,frame_no in reader:
         ts = time.time()    
         g0 = gist.get_gist_features(frame[:,:,0])
         g1 = gist.get_gist_features(frame[:,:,1])
@@ -179,7 +179,7 @@ if __name__ == '__main__':
         g = np.hstack((g0,g1,g2))
         pplot.plot(g)
         pplot.show()
-        
+        np.save('frame_'+str(frame_no), g)        
         print ("processing time:",time.time() - ts)
 
 
